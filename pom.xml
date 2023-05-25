@@ -20,6 +20,13 @@
             <artifactId>org-apache-commons-lang3</artifactId>
             <version>RELEASE130</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -49,6 +49,7 @@ public class Lesson3 {
         System.out.println(myLinkedList.popFirst()); // 1
         System.out.println(myLinkedList); // [2]
 
+
     }
 
 }

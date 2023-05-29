@@ -1,5 +1,8 @@
 package ru.gb.lesson3;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class MyLinkedList {
 
     /**
@@ -83,8 +86,19 @@ public class MyLinkedList {
     }
 
     public MyLinkedList reversed() {
-        // TODO: 25.05.2023 Реализовать пункт 4
-        throw new UnsupportedOperationException();
+        MyLinkedList reversed = new MyLinkedList();
+        if (head == null) {
+            return reversed;
+        }
+        addReversedRecursive(head, reversed);
+        return reversed;
+    }
+
+    private void addReversedRecursive(Node current, MyLinkedList result) {
+        if (current.next != null) {
+            addReversedRecursive(current.next, result);
+        }
+        result.add(current.value);
     }
 
     private Node findLast() {

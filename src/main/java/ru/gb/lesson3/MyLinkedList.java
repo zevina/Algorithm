@@ -1,8 +1,5 @@
 package ru.gb.lesson3;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 public class MyLinkedList {
 
     /**
@@ -24,6 +21,104 @@ public class MyLinkedList {
     }
 
     private Node head;
+
+    public Node getHead() {
+        return head;
+    }
+
+    /**
+     * 1. public int size() - получить размер списка
+     */
+    public int size() {
+        if (head == null) {
+            return 0;
+        }
+        Node current = head;
+        int size = 1;
+        while (current.next != null) {
+            size++;
+            current = current.next;
+        }
+        return size;
+    }
+
+    /**
+     * 2. public boolean contains(int value) - проверить наличие элемента в списке
+     */
+    public boolean contains(int value) {
+        if (head == null) {
+            return false;
+        }
+        Node current = head;
+
+        while (current.next != null) {
+            if (current.value == value) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    public void sort(){
+        sort(getHead(), findLast());
+    }
+
+    /**
+     * 5.* Любые другие доработки, которые захотите для тренировки
+     */
+    private void sort(Node start, Node end) {
+        if (start == end)
+            return;
+
+        // разделить список и рекурсивно разбить на разделы
+        Node pivot_prev = partitionLast(start, end);
+
+        sort(start, pivot_prev);
+
+        // если pivot выбран и перемещен в начало, это означает, что start и pivot совпадают, поэтому выбрать из следующего pivot
+        if (pivot_prev != null && pivot_prev == start)
+            sort(pivot_prev.next, end);
+
+            // если pivot находится посередине списка, начать со следующего из pivot, так как у нас есть pivot_prev, поэтому перемещаем два узла
+        else if (pivot_prev != null
+                && pivot_prev.next != null)
+            sort(pivot_prev.next.next, end);
+
+    }
+
+    private Node partitionLast(Node start, Node end) {
+        if (start == end || start == null || end == null)
+
+            return start;
+
+        Node pivot_prev = start;
+        Node curr = start;
+        int pivot = end.value;
+
+        // повторять до одного перед концом, нет необходимости повторять до конца, потому что конец является поворотным
+        while (start != end) {
+            if (start.value < pivot) {
+                // отслеживать последний измененный элемент
+                pivot_prev = curr;
+                int temp = curr.value;
+                curr.value = start.value;
+                start.value = temp;
+                curr = curr.next;
+            }
+
+            start = start.next;
+        }
+
+        // поменять местами положение текущего, т.е. следующего подходящего индекса и pivot
+        int temp = curr.value;
+        curr.value = pivot;
+        end.value = temp;
+
+        // вернуть предыдущее значение в текущее, потому что текущее теперь указывает на pivot
+        return pivot_prev;
+    }
+
 
     public void add(int value) {
         if (head == null) {
@@ -86,12 +181,12 @@ public class MyLinkedList {
     }
 
     public MyLinkedList reversed() {
-        MyLinkedList reversed = new MyLinkedList();
+        MyLinkedList reversedList = new MyLinkedList();
         if (head == null) {
-            return reversed;
+            return reversedList;
         }
-        addReversedRecursive(head, reversed);
-        return reversed;
+        addReversedRecursive(head, reversedList);
+        return reversedList;
     }
 
     private void addReversedRecursive(Node current, MyLinkedList result) {

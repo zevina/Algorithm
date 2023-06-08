@@ -45,4 +45,40 @@ class MyLinkedListTest {
         Assertions.assertEquals("[3 -> 2 -> 1]", reversed.toString());
     }
 
+    @Test
+    void testSize() {
+        MyLinkedList list = new MyLinkedList();
+
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        Assertions.assertEquals(3, list.size());
+    }
+
+    @Test
+    void testContains() {
+        MyLinkedList list = new MyLinkedList();
+
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        Assertions.assertEquals(false, list.contains(555));
+    }
+
+    @Test
+    void testSort() {
+        MyLinkedList list = new MyLinkedList();
+
+        list.add(7);
+        list.add(3);
+        list.add(5);
+        list.add(1);
+
+        Assertions.assertEquals("[7 -> 3 -> 5 -> 1]", list.toString());
+        list.sort();
+        Assertions.assertEquals("[1 -> 3 -> 5 -> 7]", list.toString());
+    }
+
 }

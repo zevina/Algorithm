@@ -11,24 +11,45 @@ class TreeTest {
 
     @Test
     void testAddAndContains() {
-        Tree tree = new Tree();
+        Tree<Integer> tree = new Tree();
         tree.add(5);
         tree.add(2);
         tree.add(4);
         tree.add(3);
-
         assertTrue(tree.contains(5));
         assertTrue(tree.contains(2));
         assertTrue(tree.contains(4));
         assertTrue(tree.contains(3));
-
         assertFalse(tree.contains(1));
         assertFalse(tree.contains(6));
+
+
+        Tree<String> tree2 = new Tree();
+        tree2.add("a");
+        tree2.add("b");
+        tree2.add("e");
+        tree2.add("f");
+        tree2.add("c");
+        tree2.add("z");
+        tree2.add("x");
+        assertTrue(tree2.contains("a"));
+        assertTrue(tree2.contains("z"));
+        assertTrue(tree2.contains("x"));
+        assertTrue(tree2.contains("f"));
+        assertFalse(tree2.contains("k"));
+        assertFalse(tree2.contains("m"));
+
+
+        Tree<Boolean> tree3 = new Tree();
+        tree3.add(true);
+//        tree.add(false);
+        assertTrue(tree3.contains(true));
+        assertFalse(tree3.contains(false));
     }
 
     @Test
     void testAddAndRemove() {
-        Tree tree = new Tree();
+        Tree<Integer> tree = new Tree();
         tree.add(5);
         tree.add(2);
         tree.add(4);
@@ -73,21 +94,32 @@ class TreeTest {
 
     @Test
     void testFindFirst() {
-        Tree tree = new Tree();
+        Tree<Integer> tree = new Tree();
         tree.add(12);
         tree.add(6);
         tree.add(2);
         tree.add(8);
         tree.add(9);
         tree.add(10);
-        assertEquals(2, tree.findFirst());
+        assertEquals(2, (Integer) tree.findFirst());
+        assertThrows(NoSuchElementException.class, () -> new Tree().findFirst());
 
+
+        Tree<String> stringTree = new Tree();
+        stringTree.add("a");
+        stringTree.add("b");
+        stringTree.add("e");
+        stringTree.add("f");
+        stringTree.add("c");
+        stringTree.add("z");
+        stringTree.add("x");
+        assertEquals("a", (String) stringTree.findFirst());
         assertThrows(NoSuchElementException.class, () -> new Tree().findFirst());
     }
 
     @Test
     void testDfs() {
-        Tree tree = new Tree();
+        Tree<Integer> tree = new Tree();
         tree.add(12);
         tree.add(6);
         tree.add(2);
@@ -103,7 +135,7 @@ class TreeTest {
 
     @Test
     void testBfs() {
-        Tree tree = new Tree();
+        Tree<Integer> tree = new Tree();
         tree.add(12);
         tree.add(6);
         tree.add(2);

@@ -2,80 +2,80 @@ package ru.gb.lesson4;
 
 import java.util.*;
 
-public class Tree { // <T extends Comparable<T>>
+public class Tree <T extends Comparable<? super T>> { // <T extends Comparable<T>>
 
     // TODO: 29.05.2023
     //  Добавить возможность использовать Tree для любых сравниваемых типов данных
     //  То есть нужно параметризовать класс T дженериком <T extends Comparable<T>>
 
-    private class Node {
-        int value;
+    private class Node<T extends Comparable<? super T>> {
+        T value;
         Node left;
         Node right;
 
-        public Node(int value) {
+        public Node(T value) {
             this.value = value;
         }
     }
 
     private Node root;
 
-    public void add(int value) {
+    public <T extends Comparable<? super T>> void add(T value) {
         if (root == null) {
-            root = new Node(value);
+            root = new Node<T>(value);
             return;
         }
         add(root, value);
     }
 
-    private void add(Node current, int value) {
-        if (value < current.value) {
+    private <T extends Comparable<? super T>> void add(Node<T> current, T value) {
+        if (value.compareTo(current.value) < 0) {
             if (current.left == null) {
-                current.left = new Node(value);
+                current.left = new Node<T>(value);
             } else {
                 add(current.left, value);
             }
-        } else if (value > current.value) {
+        } else if (value.compareTo(current.value) > 0) {
             if (current.right == null) {
-                current.right = new Node(value);
+                current.right = new Node<T>(value);
             } else {
                 add(current.right, value);
             }
         }
     }
 
-    public boolean contains(int value) {
+    public <T extends Comparable<? super T>> boolean contains(T value) {
         return findNode(root, value) != null;
     }
 
-    private Node findNode(Node current, int value) {
+    private <T extends Comparable<? super T>> Node findNode(Node<T> current, T value) {
         if (current == null) {
             return null;
         }
 
         if (current.value == value) {
             return current;
-        } else if (current.value > value) {
+        } else if (value.compareTo(current.value) < 0) {
             return findNode(current.left, value);
         } else { // current.value < value
             return findNode(current.right, value);
         }
     }
 
-    public void remove(int value) {
+    public <T extends Comparable<? super T>> void remove(T value) {
         root = removeNode(root, value);
     }
 
     // Метод, который удаляет ноду и возвращает ту ноду, которая будет вместо удаленной
-    private Node removeNode(Node current, int value) {
+    private <T extends Comparable<? super T>> Node<T> removeNode(Node<T> current, T value) {
         if (current == null) {
             return null;
         }
 
-        if (value < current.value) {
+        if (value.compareTo(current.value) < 0) {
             current.left = removeNode(current.left, value);
             return current;
-        } else if (value > current.value) {
+        } else if (value.compareTo(current.value) > 0) {
             current.right = removeNode(current.right, value);
             return current;
         }
@@ -102,23 +102,23 @@ public class Tree { // <T extends Comparable<T>>
         //           10
         //
         // current = 6
-        Node smallestNodeOnTheRight = findFirst(current.right); // 8
-        int smallestValueOnTheRight = smallestNodeOnTheRight.value; // 8
+        Node<T> smallestNodeOnTheRight = findFirstNode(current.right); // 8
+        T smallestValueOnTheRight = smallestNodeOnTheRight.value; // 8
         current.value = smallestValueOnTheRight;
         current.right = removeNode(current.right, smallestValueOnTheRight);
         return current;
     }
 
-    public int findFirst() {
+    public <T extends Comparable<? super T>> T findFirst() {
         if (root == null) {
             throw new NoSuchElementException();
         }
-        return findFirst(root).value;
+        return (T) findFirstNode(root).value;
     }
 
-    private Node findFirst(Node current) {
+    private  <T extends Comparable<? super T>> Node<T> findFirstNode(Node<T> current) {
         if (current.left != null) {
-            return findFirst(current.left);
+            return findFirstNode(current.left);
         }
         return current;
     }
@@ -126,17 +126,17 @@ public class Tree { // <T extends Comparable<T>>
     // Поиск в глубину DFS Depth-first search
     // Поиск в ширину  BFS Breath-first search
 
-    public List<Integer> dfs() {
+    public List<T> dfs() {
         if (root == null) {
             return List.of();
         }
 
-        List<Integer> result = new ArrayList<>();
+        List<T> result = new ArrayList<>();
         dfs(root, result);
         return List.copyOf(result);
     }
 
-    private void dfs(Node current, List<Integer> result) {
+    private <T extends Comparable<? super T>> void dfs(Node<T> current, List<T> result) {
         // in-order
         if (current.left != null) {
             dfs(current.left, result);
@@ -147,16 +147,16 @@ public class Tree { // <T extends Comparable<T>>
         }
     }
 
-    public List<Integer> bfs() {
+    public  List<T> bfs() {
         if (root == null) {
             return List.of();
         }
 
-        List<Integer> result = new ArrayList<>();
-        Queue<Node> queue = new ArrayDeque<>();
+        List<T> result = new ArrayList<>();
+        Queue<Node<T>> queue = new ArrayDeque<>();
         queue.add(root);
         while (!queue.isEmpty()) {
-            Node next = queue.poll();
+            Node<T> next = queue.poll();
             result.add(next.value);
             if (next.left != null) {
                 queue.add(next.left);
